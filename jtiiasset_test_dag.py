@@ -7,11 +7,6 @@ from airflow.operators.dummy_operator import DummyOperator
 from datetime import datetime, timedelta
 
 # import operators from the 'operators' file
-from glo_city import glo_city_function
-from glo_brand import glo_brand_function
-from glo_location import glo_location_function
-from asset_inventory import asset_inventory_function
-from asset_inventory_deployment import asset_inventory_deployment_function
 from asset_inventory_prod import asset_inventory_prod_function
 from asset_inventory_deployment_prod import asset_inventory_deployment_prod_function
 
@@ -98,36 +93,7 @@ livejtiipayroll = DummyOperator(
 
 
 #PythonOperator extract staging tables
-glo_city = PythonOperator(
-    task_id='glo_city',
-    python_callable=glo_city_function,
-    op_args=['glo_city'],
-    dag=dag)
 
-glo_location = PythonOperator(
-    task_id='glo_location',
-    python_callable=glo_location_function,
-    op_args=['glo_location'],
-    dag=dag)
-
-
-glo_brand = PythonOperator(
-    task_id='glo_brand',
-    python_callable=glo_brand_function,
-    op_args=['glo_brand'],
-    dag=dag)
-
-asset_inventory = PythonOperator(
-    task_id='asset_inventory',
-    python_callable=asset_inventory_function,
-    op_args=['asset_inventory'],
-    dag=dag)
-
-asset_inventory_deployment = PythonOperator(
-    task_id='asset_inventory_deployment',
-    python_callable=asset_inventory_deployment_function,
-    op_args=['asset_inventory_deployment'],
-    dag=dag)
 
 asset_inventory_prod = PythonOperator(
     task_id='asset_inventory_prod',
@@ -144,4 +110,4 @@ asset_inventory_deployment_prod = PythonOperator(
 
 
 #DAG Sequences
-staging_start >> [glo_city, glo_brand, glo_location] >> asset_inventory >> asset_inventory_deployment >> staging_done >> datalake_start >> asset_inventory_prod >> asset_inventory_deployment_prod >> datalake_done
+staging_start >> staging_done >> datalake_start >> asset_inventory_prod >> asset_inventory_deployment_prod >> datalake_done
