@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 # import operators from the 'operators' file
 from asset_inventory_prod import asset_inventory_prod_function
 from asset_inventory_deployment_prod import asset_inventory_deployment_prod_function
-
+from personal_prod import personal_function
 
 # import lithops function
 #from jti_lithops_function import jti_lithops_function 
@@ -107,7 +107,13 @@ asset_inventory_deployment_prod = PythonOperator(
     op_args=['asset_inventory_deployment'],
     dag=dag)
 
+personal_prod = PythonOperator(
+    task_id='personal_prod',
+    python_callable=personal_prod_function,
+    op_args=['personal'],
+    dag=dag)
+
 
 
 #DAG Sequences
-staging_start >> staging_done >> datalake_start >> asset_inventory_prod >> asset_inventory_deployment_prod >> datalake_done
+staging_start >> staging_done >> datalake_start >> personal_prod >> asset_inventory_deployment_prod >> asset_inventory_prod >> datalake_done
