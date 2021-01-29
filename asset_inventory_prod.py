@@ -32,15 +32,15 @@ config = {
 def asset_inventory_prod(tablename):
 
     #Fixed conexion string for connecting sqlserver -- no need to change 
-    conn1 = pyodbc.connect(
-        'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=cap-au-sg-prd-04.securegateway.appdomain.cloud,15275;'
-        'DATABASE=jtiiasset;'
-        'UID=sa;'
-        'PWD=Pas5word')
+    conn2 = psycopg2.connect(
+        database = 'ibmclouddb' ,
+        user = 'ibm_cloud_09847fd3_051e_4a89_b3d4_5ad2834bd12a' ,
+        password = 'b3031a57615d6aa121981db35ea33d0e07e21bfb34af76e255b1e5236ae14f13',
+        host = '0541b373-b134-406f-9687-f94b85d5cb94.bqfh4fpt0vhjh7rs4ot0.databases.appdomain.cloud',
+        port = '30280')
 
     #Fixed conexion string for connecting postgresql -- no need to change     
-    conn2 = psycopg2.connect(
+    conn1 = psycopg2.connect(
         database = 'ibmclouddb' ,
         user = 'ibm_cloud_f261f536_a6f2_4fec_b8e9_55016c16b459' ,
         password = 'a4285df0d0f18926f9c84591c78f91d402ab3d037e8ef6023f0fb4ff41e45043',
@@ -55,25 +55,25 @@ def asset_inventory_prod(tablename):
 
     #Delete data --change here
     cur2 = conn2.cursor()
-    cur2.execute("DELETE FROM jtiiasset." +tablename)
+    cur2.execute("DELETE FROM fact." +tablename)
     conn2.commit()
 
-    print(cur2.rowcount, "Records deleted successfully from " +tablename)
+    print(cur2.rowcount, "Records deleted successfully from fact." +tablename)
 
     #Insert data -- change here
     cur2 = conn2.cursor()
-    cur2.executemany("INSERT INTO jtiiasset." +tablename+ " (id, stat, createdby, createddate, createdip, updatedby, updateddate, updatedip, type, model, serial_number, taggingno, memory, hdd, processor, license1, license2, license3, remark, buy_date, buy_price, buy_currency, po_number, location_id, category, isasset, receiving_date, name, brand, old_taggingno, delete_reason) \
+    cur2.executemany("INSERT INTO fact." +tablename+ " (id, stat, createdby, createddate, createdip, updatedby, updateddate, updatedip, type, model, serial_number, taggingno, memory, hdd, processor, license1, license2, license3, remark, buy_date, buy_price, buy_currency, po_number, location_id, category, isasset, receiving_date, name, brand, old_taggingno, delete_reason) \
         VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",records)
     conn2.commit()
 
     print(cur2.rowcount, "Record inserted successfully into " +tablename)
 
 def asset_inventory_prod_function(tablename):
-    fexec = lithops.FunctionExecutor(config=config)
+    fexec = lithops.FunctionExecutor()
     fexec.call_async(asset_inventory_prod,tablename)
     print(fexec.get_result())    
     
 if __name__ == '__main__':
-    fexec = lithops.FunctionExecutor(config=config)
+    fexec = lithops.FunctionExecutor()
     fexec.call_async(asset_inventory_prod,'asset_inventory')
     print(fexec.get_result())
