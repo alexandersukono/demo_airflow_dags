@@ -49,7 +49,7 @@ def asset_inventory_deployment_prod(tablename):
     
     #Retrieve data -- change here
     cur1 = conn1.cursor()
-    cur1.execute("SELECT id, stat, createdby, createddate, createdip, updatedby, updateddate, updatedip, date_deploy, date_undeploy, asset_id, city_deploy_id, city_undeploy_id, employee_samaccountname FROM "+ tablename)
+    cur1.execute("SELECT id, stat, createdby, createddate, createdip, updatedby, updateddate, updatedip, date_deploy, date_undeploy, asset_id, city_deploy_id, city_undeploy_id, employee_samaccountname FROM jtiiasset."+ tablename)
     records = cur1.fetchall()
     #conn1.commit() -- no need to commit
 
