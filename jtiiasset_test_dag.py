@@ -9,7 +9,7 @@ from datetime import datetime, timedelta
 # import operators from the 'operators' file
 from asset_inventory_prod import asset_inventory_prod_function
 from asset_inventory_deployment_prod import asset_inventory_deployment_prod_function
-from personal_prod import personal_function
+from personal_prod import personal_prod_function
 
 # import lithops function
 #from jti_lithops_function import jti_lithops_function 
