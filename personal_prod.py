@@ -31,7 +31,7 @@ config = {
 
 def personal_prod_function(tablename):
     fexec = lithops.FunctionExecutor(config=config)
-    fexec.call_async(personal,tablename)
+    fexec.call_async(personal_prod,tablename)
     print(fexec.get_result())    
     
 def personal_prod(tablename):
