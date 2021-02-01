@@ -55,7 +55,7 @@ def personal_prod(tablename):
     
     #Retrieve data -- change here
     cur1 = conn1.cursor()
-    cur1.execute("SELECT idpersonal, badge, nama, jnkel, tgllhr, tptlhr, alamat, telepon, nohp, email, agama, statnkh, status, foto, bankname, bankbranch, bankaccount, accountname, nojamsos, npwp, passid, idabsen, xtglkerja, xquitkerja, wn, wp, ktp FROM livejtiipdbms"+ tablename)
+    cur1.execute("SELECT SELECT idpersonal, badge, nama, jnkel, tgllhr, tptlhr, alamat, telepon, nohp, email, agama, statnkh, status, foto, bankname, bankbranch, bankaccount, accountname, nojamsos, npwp, passid, idabsen, xtglkerja, xquitkerja, wn, wp, ktp, left(email , strpos(email, '@') - 1) as samaacountname FROM livejtiipdbms."+ tablename)
     records = cur1.fetchall()
     #conn1.commit() -- no need to commit
 
@@ -68,8 +68,8 @@ def personal_prod(tablename):
 
     #Insert data -- change here
     cur2 = conn2.cursor()
-    cur2.executemany("INSERT INTO fact." +tablename+ "(idpersonal, badge, nama, jnkel, tgllhr, tptlhr, alamat, telepon, nohp, email, agama, statnkh, status, foto, bankname, bankbranch, bankaccount, accountname, nojamsos, npwp, passid, idabsen, xtglkerja, xquitkerja, wn, wp, ktp) \
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",records)
+    cur2.executemany("INSERT INTO fact." +tablename+ "(idpersonal, badge, nama, jnkel, tgllhr, tptlhr, alamat, telepon, nohp, email, agama, statnkh, status, foto, bankname, bankbranch, bankaccount, accountname, nojamsos, npwp, passid, idabsen, xtglkerja, xquitkerja, wn, wp, ktp, samaaccountname) \
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",records)
     conn2.commit()
 
     print(cur2.rowcount, "Record inserted successfully into " +tablename)
