@@ -8,6 +8,7 @@ from datetime import datetime, timedelta
 
 # import operators from the 'operators' file
 from glo_city_prod import glo_city_prod_function
+from kalenderpro import kalenderpro_function
 
 
 # import lithops function
@@ -96,5 +97,11 @@ glo_city_prod = PythonOperator(
     op_args=['glo_city'],
     dag=dag)
 
+kalenderpro = PythonOperator(
+    task_id='kalenderpro',
+    python_callable=kalenderpro_function,
+    op_args=['kalenderpro'],
+    dag=dag)
+
 #DAG Sequences
-staging_start >> glo_city_prod >> staging_done
+staging_start >> kalenderpro >> glo_city_prod >> staging_done

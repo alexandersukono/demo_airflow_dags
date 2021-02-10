@@ -71,7 +71,7 @@ def kalenderpro(tablename):
 
     #Insert data -- change here
     cur2 = conn2.cursor()
-    cur2.execute_batch("INSERT INTO livejtiipdbms." +tablename+ """(noreg, tgl, dateupd, absen, overtime, tipe, timeinout, istirahat1, \
+    cur2.execute_batch("INSERT INTO livejtiipdbms." +tablename+ "(noreg, tgl, dateupd, absen, overtime, tipe, timeinout, istirahat1, \
                   istirahat2, istirahat3, istirahat4, istirahat5, jkerja, jlemburbf, jlemburaf, \
                   detlemburbf, detlemburaf, pay, meal, otmeal, half, tkt, tkp, ccode, defnamashift, \
                   deftimeinout, defistirahat1, defistirahat2, defistirahat3, defistirahat4, defistirahat5, \
@@ -79,7 +79,7 @@ def kalenderpro(tablename):
                   travel, mk, wk, defwd, othercode, client, periode, workassignment) \
                   VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \
                          %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, \
-                         %s, %s, %s, %s, %s, %s, %s)""",records)
+                         %s, %s, %s, %s, %s, %s, %s)", records)
     conn2.commit()
 
     print(cur2.rowcount, "Record inserted successfully into " +tablename)
