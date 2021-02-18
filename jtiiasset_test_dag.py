@@ -19,6 +19,8 @@ default_args = {
     "start_date": datetime(2021, 1, 14),
     "retries": 1,
     "retry_delay": timedelta(minutes=5),
+
+
 }
 
 dag = DAG("jtiiasset_test_dag", default_args=default_args, schedule_interval=None)
@@ -94,7 +96,6 @@ livejtiipayroll = DummyOperator(
 
 #PythonOperator extract staging tables
 
-
 asset_inventory_prod = PythonOperator(
     task_id='asset_inventory_prod',
     python_callable=asset_inventory_prod_function,
@@ -116,4 +117,4 @@ personal_prod = PythonOperator(
 
 
 #DAG Sequences
-staging_start >> staging_done >> datalake_start >> personal_prod >> asset_inventory_deployment_prod >> asset_inventory_prod >> datalake_done
+staging_start >> staging_done >> datalake_start >> personal_prod >> asset_inventory_deployment_prod >> asset_inventory_prod >> datalake_done >> olap_start >> olap_done
