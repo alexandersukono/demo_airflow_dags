@@ -86,7 +86,7 @@ glo_r34 = PythonOperator(
 
 glo_r35 = PythonOperator(
     task_id='glo_r35',
-    python_callable=glo_r35,
+    python_callable=glo_r35_function,
     op_args=['glo_r35'],
     dag=dag)
 
