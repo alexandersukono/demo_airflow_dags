@@ -30,12 +30,12 @@ config = {
     },
 }
 
-def kalenderpro_function(tablename):
+def jobsalary_function(tablename):
     fexec = lithops.FunctionExecutor()
-    fexec.call_async(kalenderpro,tablename)
+    fexec.call_async(jobsalary,tablename)
     print(fexec.get_result())    
     
-def kalenderpro(tablename):
+def jobsalary(tablename):
     #Fixed conexion string for connecting sqlserver -- no need to change 
     conn1 = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
@@ -54,11 +54,8 @@ def kalenderpro(tablename):
         
     #Retrieve data -- change here
     cur1 = conn1.cursor()
-    cur1.execute("SELECT noreg, tgl, dateupd, absen, overtime, tipe, timeinout, istirahat1, istirahat2, istirahat3, istirahat4," +
-                 "istirahat5, jkerja, jlemburbf, jlemburaf, detlemburbf, detlemburaf, pay, meal, otmeal, half," +
-                 "tkt, tkp, ccode, defnamashift, deftimeinout, defistirahat1, defistirahat2, defistirahat3, defistirahat4, defistirahat5," +
-                 "defjkerja, defjlembur, deftolin, deftolout, defotbf, defotaf, defjlemburbf, defjlemburaf, travel," +
-                 "mk, wk, defwd, othercode, workassignment FROM "+ tablename)
+    cur1.execute("SELECT id, noreg, idjob, tgl, gaji, tj, allow, deduct, jplus, jmin, other, medic," +
+                 "temp, otherminus, paidmedic, idform, form, currency, govtax FROM "+ tablename)
     records = cur1.fetchall()
     #conn1.commit() -- no need to commit
 
@@ -71,17 +68,14 @@ def kalenderpro(tablename):
 
     #Insert data -- change here
     cur2 = conn2.cursor()
-    cur2.executemany("INSERT INTO livejtiipdbms." +tablename+ "(noreg, tgl, dateupd, absen, overtime, tipe, timeinout, istirahat1, istirahat2, istirahat3, istirahat4," +
-                 "istirahat5, jkerja, jlemburbf, jlemburaf, detlemburbf, detlemburaf, pay, meal, otmeal, half," +
-                 "tkt, tkp, ccode, defnamashift, deftimeinout, defistirahat1, defistirahat2, defistirahat3, defistirahat4, defistirahat5," +
-                 "defjkerja, defjlembur, deftolin, deftolout, defotbf, defotaf, defjlemburbf, defjlemburaf, travel," +
-                 "mk, wk, defwd, othercode, workassignment) \
-        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",records)
+    cur2.executemany("INSERT INTO livejtiipdbms." +tablename+ "(id, noreg, idjob, tgl, gaji, tj, allow, deduct, jplus, jmin, other, medic," +
+                 "temp, otherminus, paidmedic, idform, form, currency, govtax) \
+        VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",records)
     conn2.commit()
 
     print(cur2.rowcount, "Record inserted successfully into " +tablename)
     
 if __name__ == '__main__':
     fexec = lithops.FunctionExecutor()
-    fexec.call_async(kalenderpro,'kalenderpro')
+    fexec.call_async(jobsalary,'jobsalary')
     print(fexec.get_result())

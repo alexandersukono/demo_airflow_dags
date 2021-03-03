@@ -39,10 +39,10 @@ def glo_province(tablename):
     #Fixed conexion string for connecting sqlserver -- no need to change 
     conn1 = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=cap-au-sg-prd-04.securegateway.appdomain.cloud,15275;'
-        'DATABASE=livejtiipdbms;'
-        'UID=sa;'
-        'PWD=Pas5word')
+        'SERVER=cap-au-sg-prd-04.securegateway.appdomain.cloud,15303;'
+        'DATABASE=livejtiipdbms'
+        'UID=U_DWH;'
+        'PWD=R0n4ldk03m4n2021!')
 
     #Fixed conexion string for connecting postgresql -- no need to change     
     conn2 = psycopg2.connect(

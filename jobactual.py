@@ -1,3 +1,4 @@
+
 import pyodbc
 import psycopg2
 import lithops
@@ -28,20 +29,20 @@ config = {
     #'secret_key' : <SECRET_KEY>  # Optional
     },
 }
+
 def jobactual_function(tablename):
-    fexec = lithops.FunctionExecutor(config=config)
+    fexec = lithops.FunctionExecutor()
     fexec.call_async(jobactual,tablename)
     print(fexec.get_result())    
     
 def jobactual(tablename):
-
     #Fixed conexion string for connecting sqlserver -- no need to change 
     conn1 = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
-        'SERVER=cap-au-sg-prd-04.securegateway.appdomain.cloud,15275;'
-        'DATABASE=livejtiipdbms;' #change database
-        'UID=sa;'
-        'PWD=Pas5word')
+        'SERVER=cap-au-sg-prd-04.securegateway.appdomain.cloud,15303;'
+        'DATABASE=livejtiipdbms'
+        'UID=U_DWH;'
+        'PWD=R0n4ldk03m4n2021!')
 
     #Fixed conexion string for connecting postgresql -- no need to change     
     conn2 = psycopg2.connect(
@@ -50,10 +51,12 @@ def jobactual(tablename):
         password = 'a4285df0d0f18926f9c84591c78f91d402ab3d037e8ef6023f0fb4ff41e45043',
         host = 'c0ca2771-62ed-4c2a-862e-743fda10b364.bqfh4fpt0vhjh7rs4ot0.databases.appdomain.cloud',
         port = '32645')
-    
+        
     #Retrieve data -- change here
     cur1 = conn1.cursor()
-    cur1.execute("SELECT id, noreg, tglkerja, noregistrasi, kep, lob, dept, kal, lok, sect, grup, jabatan, head, [level], superior, subdivision, subemployee, jobdesc, tglend, taxpaid, payment, idform, form, update_type, manager_confirmation FROM "+ tablename)
+    cur1.execute("SELECT id, noreg, tglkerja, noregistrasi, kep, lob, dept, kal, lok, sect, grup, jabatan," +
+                 "head, level, superior, subdivision, subemployee, jobdesc, tglend, taxpaid, payment, idform," +
+                 "form, update_type, manager_confirmation FROM "+ tablename)
     records = cur1.fetchall()
     #conn1.commit() -- no need to commit
 
@@ -66,12 +69,14 @@ def jobactual(tablename):
 
     #Insert data -- change here
     cur2 = conn2.cursor()
-    cur2.executemany("INSERT INTO livejtiipdbms." +tablename+ "(id, noreg, tglkerja, noregistrasi, kep, lob, dept, kal, lok, sect, grup, jabatan, head, level, superior, subdivision, subemployee, jobdesc, tglend, taxpaid, payment, idform, form, update_type, manager_confirmation) \
+    cur2.executemany("INSERT INTO livejtiipdbms." +tablename+ "(id, noreg, tglkerja, noregistrasi, kep, lob, dept, kal, lok, sect, grup, jabatan," +
+                 "head, level, superior, subdivision, subemployee, jobdesc, tglend, taxpaid, payment, idform," +
+                 "form, update_type, manager_confirmation) \
         VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",records)
     conn2.commit()
 
     print(cur2.rowcount, "Record inserted successfully into " +tablename)
-
+    
 if __name__ == '__main__':
     fexec = lithops.FunctionExecutor()
     fexec.call_async(jobactual,'jobactual')
