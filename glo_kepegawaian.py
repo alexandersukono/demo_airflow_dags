@@ -35,12 +35,12 @@ def glo_kepegawaian_function(tablename):
     fexec.call_async(glo_kepegawaian,tablename)
     print(fexec.get_result())    
     
-def glo_kepegawaian(tablename): 
+def glo_kepegawaian(tablename):
     #Fixed conexion string for connecting sqlserver -- no need to change 
     conn1 = pyodbc.connect(
         'DRIVER={ODBC Driver 17 for SQL Server};'
         'SERVER=cap-au-sg-prd-04.securegateway.appdomain.cloud,15303;'
-        'DATABASE=livejtiipdbms'
+        'DATABASE=livejtiipdbms;'
         'UID=U_DWH;'
         'PWD=R0n4ldk03m4n2021!')
 
