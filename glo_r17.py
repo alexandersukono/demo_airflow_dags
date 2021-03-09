@@ -53,7 +53,7 @@ def glo_r17(tablename):
         
     #Retrieve data -- change here
     cur1 = conn1.cursor()
-    cur1.execute("SELECT cmodel, cint4assg, tint4assg FROM "+ tablename)
+    cur1.execute("SELECT cmodel, cintassg, tintassg FROM "+ tablename)
     records = cur1.fetchall()
     #conn1.commit() -- no need to commit
 
@@ -66,7 +66,7 @@ def glo_r17(tablename):
 
     #Insert data -- change here
     cur2 = conn2.cursor()
-    cur2.executemany("INSERT INTO livejtiipdbms." +tablename+ "(cmodel, cint4assg, tint4assg) \
+    cur2.executemany("INSERT INTO livejtiipdbms." +tablename+ "(cmodel, cintassg, tintassg) \
         VALUES(%s, %s, %s)",records)
     conn2.commit()
 
