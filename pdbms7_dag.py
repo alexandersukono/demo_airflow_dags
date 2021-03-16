@@ -33,7 +33,7 @@ default_args = {
     "retry_delay": timedelta(minutes=5),
 }
 
-dag = DAG("pdbms6_dag", default_args=default_args, schedule_interval=None)
+dag = DAG("pdbms7_dag", default_args=default_args, schedule_interval=None)
 
 jobactualtype = PythonOperator(
     task_id='jobactualtype',
